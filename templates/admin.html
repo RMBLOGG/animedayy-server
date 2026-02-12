@@ -1,1 +1,395 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - App Update Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .card {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #2d2d44;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #b8b8d1;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0f0f1e;
+            border: 2px solid #2d2d44;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: #16162e;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .whats-new-section {
+            background: #0f0f1e;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .whats-new-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .whats-new-item input {
+            flex: 1;
+        }
+        
+        .btn-remove {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-remove:hover {
+            background: #ff5252;
+        }
+        
+        .btn-add {
+            background: #4ecca3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-add:hover {
+            background: #3db88f;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .current-info {
+            background: #0f0f1e;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #2d2d44;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #8f8fa8;
+            font-size: 14px;
+        }
+        
+        .info-value {
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background: #4ecca3;
+            color: #0f0f1e;
+        }
+        
+        .badge-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #8f8fa8;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 App Update Manager</h1>
+            <p>Kelola informasi update aplikasi AnimeDayy</p>
+        </div>
 
+        <!-- Current Update Info -->
+        <div class="card">
+            <h2 class="section-title">ℹ️ Informasi Update Saat Ini</h2>
+            <div class="current-info">
+                <div class="info-row">
+                    <span class="info-label">Version Code:</span>
+                    <span class="info-value">{{ update_info.version_code }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Version Name:</span>
+                    <span class="info-value">{{ update_info.version_name }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Update Required:</span>
+                    <span class="info-value">
+                        {% if update_info.update_required %}
+                            <span class="badge badge-danger">YA - Wajib Update</span>
+                        {% else %}
+                            <span class="badge badge-success">Tidak - Opsional</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Last Updated:</span>
+                    <span class="info-value">{{ update_info.last_updated }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Form -->
+        <div class="card">
+            <h2 class="section-title">✏️ Edit Informasi Update</h2>
+            
+            <form action="/admin/update" method="POST">
+                <!-- Version Info -->
+                <div class="form-group">
+                    <label for="version_code">Version Code (angka, harus lebih besar dari sebelumnya)</label>
+                    <input type="number" id="version_code" name="version_code" 
+                           value="{{ update_info.version_code }}" required min="1">
+                    <p class="help-text">Contoh: 1, 2, 3, dst. Increment setiap ada update baru</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="version_name">Version Name (untuk ditampilkan ke user)</label>
+                    <input type="text" id="version_name" name="version_name" 
+                           value="{{ update_info.version_name }}" required 
+                           placeholder="Contoh: 1.0.0, 2.1.5">
+                    <p class="help-text">Format: Major.Minor.Patch (contoh: 1.2.3)</p>
+                </div>
+
+                <!-- Update Required -->
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="update_required" name="update_required"
+                               {% if update_info.update_required %}checked{% endif %}>
+                        <label for="update_required" style="margin: 0;">
+                            <strong>Update Wajib</strong> - User harus update sebelum bisa menggunakan app
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Update Title -->
+                <div class="form-group">
+                    <label for="update_title">Judul Update (ditampilkan di dialog)</label>
+                    <input type="text" id="update_title" name="update_title" 
+                           value="{{ update_info.update_title }}" 
+                           placeholder="Contoh: Update Tersedia!">
+                </div>
+
+                <!-- Update Message -->
+                <div class="form-group">
+                    <label for="update_message">Pesan Update (deskripsi singkat)</label>
+                    <textarea id="update_message" name="update_message" 
+                              placeholder="Contoh: Versi baru aplikasi AnimeDayy sudah tersedia dengan fitur-fitur baru dan perbaikan bug!">{{ update_info.update_message }}</textarea>
+                </div>
+
+                <!-- Download URL -->
+                <div class="form-group">
+                    <label for="download_url">Link Download APK</label>
+                    <input type="text" id="download_url" name="download_url" 
+                           value="{{ update_info.download_url }}" 
+                           placeholder="https://example.com/AnimeDayy-v1.0.0.apk">
+                    <p class="help-text">URL lengkap untuk download file APK</p>
+                </div>
+
+                <!-- What's New -->
+                <div class="form-group">
+                    <label>Yang Baru di Versi Ini</label>
+                    <div class="whats-new-section">
+                        <div id="whats-new-container">
+                            {% if update_info.whats_new %}
+                                {% for item in update_info.whats_new %}
+                                <div class="whats-new-item">
+                                    <input type="text" name="whats_new[]" 
+                                           value="{{ item }}" 
+                                           placeholder="Contoh: Fitur bookmark anime">
+                                    <button type="button" class="btn-remove" onclick="removeWhatsNew(this)">✕</button>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="whats-new-item">
+                                    <input type="text" name="whats_new[]" 
+                                           placeholder="Contoh: Fitur bookmark anime">
+                                    <button type="button" class="btn-remove" onclick="removeWhatsNew(this)">✕</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <button type="button" class="btn-add" onclick="addWhatsNew()">+ Tambah Item</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">💾 Simpan Update Info</button>
+            </form>
+        </div>
+
+        <!-- API Info -->
+        <div class="card">
+            <h2 class="section-title">🔗 API Endpoint untuk Android</h2>
+            <div class="current-info">
+                <div class="info-row">
+                    <span class="info-label">Check Update:</span>
+                    <span class="info-value" style="font-family: monospace; font-size: 12px;">
+                        GET /api/check-update?current_version_code=1
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Get Info:</span>
+                    <span class="info-value" style="font-family: monospace; font-size: 12px;">
+                        GET /api/update-info
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addWhatsNew() {
+            const container = document.getElementById('whats-new-container');
+            const newItem = document.createElement('div');
+            newItem.className = 'whats-new-item';
+            newItem.innerHTML = `
+                <input type="text" name="whats_new[]" placeholder="Contoh: Perbaikan bug">
+                <button type="button" class="btn-remove" onclick="removeWhatsNew(this)">✕</button>
+            `;
+            container.appendChild(newItem);
+        }
+
+        function removeWhatsNew(button) {
+            const container = document.getElementById('whats-new-container');
+            if (container.children.length > 1) {
+                button.parentElement.remove();
+            } else {
+                alert('Minimal harus ada 1 item!');
+            }
+        }
+    </script>
+</body>
+</html>
